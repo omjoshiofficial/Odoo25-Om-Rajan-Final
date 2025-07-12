@@ -6,18 +6,14 @@ using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Data.SqlClient;
 using System.Data;
-using System.Web.Services;
 using System.Configuration;
 
 namespace StackIt.Pages
 {
     public partial class AskQuestionPage : System.Web.UI.Page
     {
-
         SqlCommand cmd;
         SqlConnection cn;
-        SqlDataAdapter da;
-        DataSet ds;
 
         void mycon()
         {
@@ -28,14 +24,14 @@ namespace StackIt.Pages
 
         void TagDrop()
         {
-            cmd = new SqlCommand("select * from Tags", cn);
+            cmd = new SqlCommand("SELECT * FROM Tags", cn);
             SqlDataAdapter da = new SqlDataAdapter(cmd);
             DataTable dt = new DataTable();
             da.Fill(dt);
 
             txtTags.DataSource = dt;
-            txtTags.DataTextField = "Name";   // This will show as display text
-            txtTags.DataValueField = "Id";    // This will be the value behind each item
+            txtTags.DataTextField = "Name";   // Display text
+            txtTags.DataValueField = "Id";    // Actual value
             txtTags.DataBind();
 
             txtTags.Items.Insert(0, new ListItem("--select tag--", ""));
@@ -43,8 +39,12 @@ namespace StackIt.Pages
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            mycon();
-            TagDrop();
+            if (!IsPostBack)
+            {
+                mycon();
+                TagDrop();
+                cn.Close();
+            }
         }
 
         protected void btnSubmitQuestion_Click(object sender, EventArgs e)
@@ -53,24 +53,35 @@ namespace StackIt.Pages
             {
                 if (Request.Cookies["login"] != null)
                 {
+                    // Check if tag is selected
+                    if (string.IsNullOrEmpty(txtTags.SelectedItem.Value))
+                    {
+                        // Show alert if no tag selected
+                        Response.Write("<script>alert('Please select a tag');</script>");
+                        return;
+                    }
+
                     string uid = Request.Cookies["login"].Values["uid"].ToString();
 
                     mycon();
-                    cmd = new SqlCommand("insert into Questions (Title,Description,TagId,UserId) values (@title,@desc,@tagid,@userid);", cn);
-                    cmd.Parameters.AddWithValue("@title", txtTitle.Text);
-                    cmd.Parameters.AddWithValue("@desc", editor.Text);
-                    cmd.Parameters.AddWithValue("@tagid", txtTags.SelectedItem.Value);
+                    cmd = new SqlCommand("INSERT INTO Questions (Title, Description, TagId, UserId) VALUES (@title, @desc, @tagid, @userid);", cn);
+                    cmd.Parameters.AddWithValue("@title", txtTitle.Text.Trim());
+                    cmd.Parameters.AddWithValue("@desc", editor.Text.Trim());
+                    cmd.Parameters.AddWithValue("@tagid", Convert.ToInt32(txtTags.SelectedItem.Value));
                     cmd.Parameters.AddWithValue("@userid", Convert.ToInt32(uid));
 
                     cmd.ExecuteNonQuery();
 
+                    Response.Redirect("homepage.aspx");
                 }
-
-                Response.Redirect("homepage.aspx");
+                else
+                {
+                    Response.Write("<script>alert('Please log in first');</script>");
+                }
             }
             catch (Exception ex)
             {
-
+                Response.Write("<script>alert('Error: " + ex.Message + "');</script>");
             }
             finally
             {

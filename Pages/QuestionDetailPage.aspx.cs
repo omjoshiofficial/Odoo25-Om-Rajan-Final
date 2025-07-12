@@ -94,25 +94,48 @@ namespace StackIt.Pages
                 if (Request.Cookies["login"] != null)
                 {
                     string uid = Request.Cookies["login"].Values["uid"].ToString();
-
                     mycon();
+
+                    // Insert answer
                     cmd = new SqlCommand("insert into Answers (QuestionId,UserId,Content) values (@qid,@uid,@content);", cn);
                     cmd.Parameters.AddWithValue("@qid", Request.QueryString["qid"].ToString());
                     cmd.Parameters.AddWithValue("@uid", Convert.ToInt32(uid));
                     cmd.Parameters.AddWithValue("@content", answertxt.Text);
-
                     cmd.ExecuteNonQuery();
 
+                    // Get question owner to send notification
+                    cmd = new SqlCommand("SELECT UserId FROM Questions WHERE QuestionsId = @qid", cn);
+                    cmd.Parameters.AddWithValue("@qid", Request.QueryString["qid"].ToString());
+                    object ownerIdObj = cmd.ExecuteScalar();
+
+                    if (ownerIdObj != null && ownerIdObj != DBNull.Value)
+                    {
+                        int ownerId = Convert.ToInt32(ownerIdObj);
+
+                        if (ownerId != Convert.ToInt32(uid)) // do not notify yourself
+                        {
+                            string message = "Your question has a new answer.";
+                            string redirectUrl = "../Pages/QuestionDetailPage.aspx?qid=" + Request.QueryString["qid"].ToString();
+
+                            cmd = new SqlCommand("INSERT INTO Notifications (UserId, Message, IsRead, CreatedAt, RedirectUrl) VALUES (@userId, @message, 0, GETDATE(), @url)", cn);
+                            cmd.Parameters.AddWithValue("@userId", ownerId);
+                            cmd.Parameters.AddWithValue("@message", message);
+                            cmd.Parameters.AddWithValue("@url", redirectUrl);
+                            cmd.ExecuteNonQuery();
+                        }
+                    }
+
+                    cn.Close();
                     Response.Redirect(Request.Url.AbsoluteUri, false);
                 }
-
             }
             catch (Exception ex)
             {
-
                 throw;
             }
         }
+
+
 
         protected void rptAnswers_ItemCommand(object source, RepeaterCommandEventArgs e)
         {

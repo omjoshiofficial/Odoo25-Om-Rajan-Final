@@ -60,30 +60,21 @@ namespace StackIt.Pages
         protected global::System.Web.UI.WebControls.Repeater rptQuestions;
 
         /// <summary>
-        /// lnkPage1 control.
+        /// lnkPagePrev control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkPage1;
+        protected global::System.Web.UI.WebControls.LinkButton lnkPagePrev;
 
         /// <summary>
-        /// lnkPage2 control.
+        /// lnkPageNext control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkPage2;
-
-        /// <summary>
-        /// lnkPage3 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.LinkButton lnkPage3;
+        protected global::System.Web.UI.WebControls.LinkButton lnkPageNext;
     }
 }

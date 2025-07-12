@@ -34,7 +34,7 @@ namespace StackIt.Auth
             {
                 if (emailtxt.Text == "admin@gmail.com" && passwordtxt.Text == "admin@123")
                 {
-                    Response.Redirect("Admin_dashboard.aspx");
+                    Response.Redirect("~/pages/Admindashboard.aspx");
                 }
 
                 cmd = new SqlCommand("select * from Users where Email = @email and PasswordHash = @pass", cn);

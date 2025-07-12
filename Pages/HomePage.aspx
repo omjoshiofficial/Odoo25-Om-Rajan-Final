@@ -1,4 +1,4 @@
-﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/StackItMasterPage.Master" AutoEventWireup="true" CodeBehind="HomePage.aspx.cs" Inherits="StackIt.Pages.HomePage" %>
+﻿<%@ Page Title="" Language="C#" MasterPageFile="~/Pages/StackItMasterPage.Master" AutoEventWireup="true" CodeBehind="HomePage.aspx.cs" Inherits="StackIt.Pages.HomePage" MaintainScrollPositionOnPostBack="true" %>
 
 <asp:Content ID="Content1" ContentPlaceHolderID="head" runat="server">
     <meta name="viewport" content="width=device-width, initial-scale=1"> <!-- Important for mobile -->
@@ -10,14 +10,15 @@
         <div class="row g-2 mb-3">
             <!-- Buttons -->
             <div class="col-12 col-md-6 d-flex flex-wrap gap-2">
-                <asp:Button ID="btnNewest" runat="server" Text="Newest" CssClass="btn btn-outline-secondary flex-fill" />
-                <asp:Button ID="btnUnanswered" runat="server" Text="Unanswered" CssClass="btn btn-outline-secondary flex-fill" />
+                <asp:Button ID="btnNewest" runat="server" Text="Newest" CssClass="btn btn-outline-secondary flex-fill" OnClick="btnNewest_Click" />
+                <asp:Button ID="btnUnanswered" runat="server" Text="Unanswered" CssClass="btn btn-outline-secondary flex-fill" OnClick="btnUnanswered_Click" />
+
             </div>
             <!-- Search -->
             <div class="col-12 col-md-6">
                 <div class="input-group">
-                    <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search..."></asp:TextBox>
-                    <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-outline-primary" />
+                    <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search Your Question Here..."></asp:TextBox>
+                    <asp:Button ID="btnSearch" runat="server" Text="Search" CssClass="btn btn-outline-primary" OnClick="btnSearch_Click" />
                 </div>
             </div>
         </div>
@@ -45,20 +46,16 @@
 </asp:Repeater>
 
 
-        <!-- Pagination -->
         <nav class="mt-4">
-            <ul class="pagination justify-content-center flex-wrap">
-                <li class="page-item">
-                    <asp:LinkButton ID="lnkPage1" runat="server" CssClass="page-link">1</asp:LinkButton>
-                </li>
-                <li class="page-item">
-                    <asp:LinkButton ID="lnkPage2" runat="server" CssClass="page-link">2</asp:LinkButton>
-                </li>
-                <li class="page-item">
-                    <asp:LinkButton ID="lnkPage3" runat="server" CssClass="page-link">3</asp:LinkButton>
-                </li>
-            </ul>
-        </nav>
+    <ul class="pagination justify-content-center flex-wrap">
+        <li class="page-item">
+            <asp:LinkButton ID="lnkPagePrev" runat="server" CssClass="page-link" OnClick="lnkPagePrev_Click">Previous</asp:LinkButton>
+        </li>
+        <li class="page-item">
+            <asp:LinkButton ID="lnkPageNext" runat="server" CssClass="page-link" OnClick="lnkPageNext_Click">Next</asp:LinkButton>
+        </li>
+    </ul>
+</nav>
     </div>
 
 </asp:Content>
