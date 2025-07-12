@@ -42,7 +42,7 @@
                             <asp:TextBox type="password" CssClass="form-control" ID="passwordtxt" placeholder="Enter your password" runat="server" />
                         </div>
                         <div class="d-grid">
-                            <asp:Button Text="Login" class="btn btn-primary" runat="server" />
+                            <asp:Button Text="Login" ID="loginbtn" OnClick="loginbtn_Click" class="btn btn-primary" runat="server" />
                         </div>
                     </form>
                     <div class="text-center mt-3">
