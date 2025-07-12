@@ -35,14 +35,22 @@ namespace StackIt.Pages
         {
             try
             {
-                mycon();
-                cmd = new SqlCommand("insert into Questions (Title,Description,TagId,UserId) values (@title,@desc,@tagid,@userid);", cn);
-                cmd.Parameters.AddWithValue("@title", txtTitle.Text);
-                cmd.Parameters.AddWithValue("@desc", "");
-                cmd.Parameters.AddWithValue("@tagid", txtTags.SelectedItem.Value);
-                cmd.Parameters.AddWithValue("@userid", 1);
+                if (Request.Cookies["login"] != null)
+                {
+                    string uid = Request.Cookies["login"].Values["uid"].ToString();
 
-                cmd.ExecuteNonQuery();
+                    mycon();
+                    cmd = new SqlCommand("insert into Questions (Title,Description,TagId,UserId) values (@title,@desc,@tagid,@userid);", cn);
+                    cmd.Parameters.AddWithValue("@title", txtTitle.Text);
+                    cmd.Parameters.AddWithValue("@desc", editor.Text);
+                    cmd.Parameters.AddWithValue("@tagid", txtTags.SelectedItem.Value);
+                    cmd.Parameters.AddWithValue("@userid", Convert.ToInt32(uid));
+
+                    cmd.ExecuteNonQuery();
+
+                }
+
+                Response.Redirect("homepage.aspx");
             }
             catch (Exception ex)
             {

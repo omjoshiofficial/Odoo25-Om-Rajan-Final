@@ -14,7 +14,9 @@
             </div>
             <div class="mb-3">
                 <label class="form-label">Description</label>
-                <div id="editor" class="editor-container bg-white border"></div>
+                <%--<div id="editor" class="editor-container bg-white border"></div>--%>
+                <asp:TextBox ID="editor" TextMode="MultiLine" CssClass="form-control" runat="server" />
+
             </div>
             <div class="mb-3">
                 <%--<label for="txtTags" class="form-label">Tags</label>--%>
