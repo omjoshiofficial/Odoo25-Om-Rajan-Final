@@ -27,10 +27,8 @@ namespace StackIt.Pages
         protected void Page_Load(object sender, EventArgs e)
         {
             mycon();
-            string uid = Request.Cookies["login"].Values["uid"].ToString();
 
-            cmd = new SqlCommand("select * from Questions q join Users u on q.UserId = u.Id where UserId = @id", cn);
-            cmd.Parameters.AddWithValue("@id", uid);
+            cmd = new SqlCommand("select * from Questions q join Users u on q.UserId = u.Id", cn);
 
             da = new SqlDataAdapter(cmd);
             ds = new DataSet();

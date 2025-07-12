@@ -15,6 +15,42 @@ namespace StackIt.Pages
     {
 
         /// <summary>
+        /// questiontxt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label questiontxt;
+
+        /// <summary>
+        /// descriptiontxt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Label descriptiontxt;
+
+        /// <summary>
+        /// usernametxt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.HtmlControls.HtmlGenericControl usernametxt;
+
+        /// <summary>
+        /// rptAnswers control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Repeater rptAnswers;
+
+        /// <summary>
         /// pnlAnswer control.
         /// </summary>
         /// <remarks>
@@ -22,6 +58,15 @@ namespace StackIt.Pages
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.Panel pnlAnswer;
+
+        /// <summary>
+        /// answertxt control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox answertxt;
 
         /// <summary>
         /// btnSubmitAnswer control.
