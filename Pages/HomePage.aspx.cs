@@ -28,8 +28,22 @@ namespace StackIt.Pages
         {
             mycon();
 
-            cmd = new SqlCommand("select * from Questions q join Users u on q.UserId = u.Id", cn);
+            //cmd = new SqlCommand("select * from Questions q join Users u on q.UserId = u.Id", cn);
 
+            cmd = new SqlCommand(@"
+    SELECT 
+        q.QuestionsId,
+        q.Title,
+        q.Description,
+        u.Username,
+        t.Name AS TagName,
+        COUNT(a.Id) AS AnswerCount
+    FROM Questions q
+    JOIN Users u ON q.UserId = u.Id
+    LEFT JOIN Tags t ON q.TagId = t.Id
+    LEFT JOIN Answers a ON q.QuestionsId = a.QuestionId
+    GROUP BY q.QuestionsId, q.Title, q.Description, u.Username, t.Name
+", cn);
             da = new SqlDataAdapter(cmd);
             ds = new DataSet();
             da.Fill(ds);

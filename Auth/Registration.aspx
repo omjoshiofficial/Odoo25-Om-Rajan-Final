@@ -50,9 +50,7 @@
                         <div class="mb-3">
                             <label for="role" class="form-label">Role</label>
                             <asp:DropDownList ID="roleDropdown" required="required" CssClass="form-select" runat="server">
-                                <asp:ListItem Text="Select Role" Value="" />
                                 <asp:ListItem Text="User" Value="User" />
-                                <asp:ListItem Text="Admin" Value="Admin" />
                             </asp:DropDownList>
                         </div>
                         <div class="mb-3">

@@ -22,11 +22,8 @@
                 <%--<label for="txtTags" class="form-label">Tags</label>--%>
                 <%--<asp:TextBox ID="txtTags" runat="server" CssClass="form-control" placeholder="e.g., SQL, C#, Entity Framework"></asp:TextBox>--%>
                 <asp:DropDownList ID="txtTags" CssClass="form-control" runat="server">
-                    <asp:ListItem Text="--select tag--" />
-                    <asp:ListItem Text="SQL" Value="1" />
-                    <asp:ListItem Text="C#" Value="2" />
-                    <asp:ListItem Text="Python" Value="3" />
-                </asp:DropDownList>
+</asp:DropDownList>
+
             </div>
             <asp:Button ID="btnSubmitQuestion" runat="server" Text="Submit" CssClass="btn btn-success" OnClick="btnSubmitQuestion_Click" />
         </asp:Panel>

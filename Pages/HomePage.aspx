@@ -24,14 +24,26 @@
 
         <!-- Questions List -->
         <asp:Repeater ID="rptQuestions" runat="server">
-            <ItemTemplate>
-                <a href='QuestionDetailPage.aspx?qid=<%#Eval("QuestionsId") %>' class="list-group-item list-group-item-action mb-2 shadow-sm rounded">
+    <ItemTemplate>
+        <a href='QuestionDetailPage.aspx?qid=<%#Eval("QuestionsId") %>' 
+           class="list-group-item list-group-item-action mb-2 shadow-sm rounded">
+           
+            <div class="d-flex justify-content-between align-items-start">
+                <div class="pe-3">
                     <h5 class="mb-1"><%# Eval("Title") %></h5>
                     <p class="mb-1 text-muted"><%# Eval("Description") %></p>
                     <small class="text-secondary">Asked by <%# Eval("Username") %></small>
-                </a>
-            </ItemTemplate>
-        </asp:Repeater>
+                </div>
+                <div class="text-end">
+                    <span class="badge bg-secondary mb-1"><%# Eval("TagName") %></span><br />
+                    <span class="badge bg-info text-dark"><%# Eval("AnswerCount") %> Answers</span>
+                </div>
+            </div>
+
+        </a>
+    </ItemTemplate>
+</asp:Repeater>
+
 
         <!-- Pagination -->
         <nav class="mt-4">

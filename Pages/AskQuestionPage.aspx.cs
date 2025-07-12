@@ -26,9 +26,25 @@ namespace StackIt.Pages
             cn.Open();
         }
 
+        void TagDrop()
+        {
+            cmd = new SqlCommand("select * from Tags", cn);
+            SqlDataAdapter da = new SqlDataAdapter(cmd);
+            DataTable dt = new DataTable();
+            da.Fill(dt);
+
+            txtTags.DataSource = dt;
+            txtTags.DataTextField = "Name";   // This will show as display text
+            txtTags.DataValueField = "Id";    // This will be the value behind each item
+            txtTags.DataBind();
+
+            txtTags.Items.Insert(0, new ListItem("--select tag--", ""));
+        }
+
         protected void Page_Load(object sender, EventArgs e)
         {
             mycon();
+            TagDrop();
         }
 
         protected void btnSubmitQuestion_Click(object sender, EventArgs e)
