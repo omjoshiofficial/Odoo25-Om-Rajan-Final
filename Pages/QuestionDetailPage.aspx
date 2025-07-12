@@ -24,20 +24,20 @@
         <h5 class="mb-3">Answers</h5>
 
         <!-- Answer List -->
-        <asp:Repeater ID="rptAnswers" runat="server">
-            <ItemTemplate>
-                <div class="mb-3 border rounded p-3 shadow-sm bg-white">
-                    <p><%#Eval("Content")%></p>
-                    <small class="text-muted">Answered by <%#Eval("Username") %></small>
-                    <div class="d-flex flex-wrap align-items-center gap-2">
-                        <asp:Button Text="Upvote" class="btn btn-outline-success btn-sm" ID="upvote" runat="server" />
-                        <asp:Button Text="Downvote" class="btn btn-outline-success btn-sm" ID="downvote" runat="server" />
-
-                        <span class="ms-2">Votes: 5</span>
-                    </div>
+        <asp:Repeater ID="rptAnswers" runat="server" OnItemCommand="rptAnswers_ItemCommand">
+        <ItemTemplate>
+            <div class="mb-3 border rounded p-3 shadow-sm bg-white">
+                <p><%#Eval("Content")%></p>
+                <small class="text-muted">Answered by <%#Eval("Username") %></small>
+                <div class="d-flex flex-wrap align-items-center gap-2">
+                    <asp:Button Text="Upvote" CommandName="Upvote" CommandArgument='<%#Eval("Id") %>' class="btn btn-outline-success btn-sm" runat="server" />
+                    <asp:Button Text="Downvote" CommandName="Downvote" CommandArgument='<%#Eval("Id") %>' class="btn btn-outline-danger btn-sm" runat="server" />
+                    <span class="ms-2">Votes: <%#Eval("VoteCount") %></span>
                 </div>
-            </ItemTemplate>
+            </div>
+        </ItemTemplate>
         </asp:Repeater>
+
 
         <h6 class="mt-4">Submit Your Answer</h6>
         <asp:Panel ID="pnlAnswer" runat="server">

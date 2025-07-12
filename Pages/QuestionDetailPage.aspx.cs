@@ -26,14 +26,13 @@ namespace StackIt.Pages
             cn.Open();
         }
 
-
         void questionDetail()
         {
             mycon();
 
             if (Request.QueryString["qid"] != null)
             {
-                cmd = new SqlCommand("select QuestionsId,Title,Description,TagId,UserId,Username from Questions join Users on Questions.UserId = Users.Id where QuestionsId=@qid", cn);
+                cmd = new SqlCommand("SELECT QuestionsId,Title,Description,TagId,Users.Username FROM Questions JOIN Users ON Questions.UserId = Users.Id WHERE QuestionsId=@qid", cn);
                 cmd.Parameters.AddWithValue("@qid", Request.QueryString["qid"].ToString());
 
                 da = new SqlDataAdapter(cmd);
@@ -46,7 +45,22 @@ namespace StackIt.Pages
                     descriptiontxt.Text = ds.Tables[0].Rows[0]["Description"].ToString();
                     usernametxt.InnerText = ds.Tables[0].Rows[0]["Username"].ToString();
 
-                    cmd = new SqlCommand("select * from Answers join Users on Answers.UserId = Users.Id where QuestionId=@qid", cn);
+                    // Get Answers along with vote count
+                    cmd = new SqlCommand(@"SELECT 
+                       Answers.Id,
+                       Answers.Content,
+                       Answers.QuestionId,
+                       Answers.UserId,
+                       Answers.CreatedAt,
+                       Users.Username,
+                       ISNULL(SUM(Votes.VoteType), 0) AS VoteCount 
+                       FROM Answers 
+                       JOIN Users ON Answers.UserId = Users.Id 
+                       LEFT JOIN Votes ON Answers.Id = Votes.AnswerId 
+                       WHERE Answers.QuestionId = @qid 
+                       GROUP BY 
+                       Answers.Id, Answers.Content, Answers.QuestionId, Answers.UserId, Answers.CreatedAt, Users.Username", cn);
+
                     cmd.Parameters.AddWithValue("@qid", Request.QueryString["qid"].ToString());
 
                     da = new SqlDataAdapter(cmd);
@@ -55,20 +69,21 @@ namespace StackIt.Pages
 
                     rptAnswers.DataSource = ds;
                     rptAnswers.DataBind();
-
                 }
             }
 
+            cn.Close();
         }
-
 
 
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (Request.QueryString["qid"] != null)
+            if (!IsPostBack)
             {
-                questionDetail();
-
+                if (Request.QueryString["qid"] != null)
+                {
+                    questionDetail();
+                }
             }
         }
 
@@ -98,5 +113,52 @@ namespace StackIt.Pages
                 throw;
             }
         }
+
+        protected void rptAnswers_ItemCommand(object source, RepeaterCommandEventArgs e)
+        {
+            if (Request.Cookies["login"] != null)
+            {
+                string uid = Request.Cookies["login"].Values["uid"].ToString();
+                int userId = Convert.ToInt32(uid);
+                int answerId = Convert.ToInt32(e.CommandArgument);
+
+                mycon();
+
+                // Check if user already voted
+                cmd = new SqlCommand("SELECT COUNT(*) FROM Votes WHERE AnswerId=@aid AND UserId=@uid", cn);
+                cmd.Parameters.AddWithValue("@aid", answerId);
+                cmd.Parameters.AddWithValue("@uid", userId);
+                int count = (int)cmd.ExecuteScalar();
+
+                int voteType = (e.CommandName == "Upvote") ? 1 : -1;
+
+                if (count > 0)
+                {
+                    // Update vote
+                    cmd = new SqlCommand("UPDATE Votes SET VoteType=@vtype WHERE AnswerId=@aid AND UserId=@uid", cn);
+                }
+                else
+                {
+                    // Insert new vote
+                    cmd = new SqlCommand("INSERT INTO Votes (AnswerId, UserId, VoteType) VALUES (@aid, @uid, @vtype)", cn);
+                }
+
+                cmd.Parameters.AddWithValue("@vtype", voteType);
+                cmd.Parameters.AddWithValue("@aid", answerId);
+                cmd.Parameters.AddWithValue("@uid", userId);
+
+                cmd.ExecuteNonQuery();
+
+                cn.Close();
+
+                questionDetail(); // Refresh answers and votes
+            }
+            else
+            {
+                // Not logged in
+                Response.Write("<script>alert('Please login to vote!');</script>");
+            }
+        }
+
     }
 }
