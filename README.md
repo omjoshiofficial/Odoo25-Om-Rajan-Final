@@ -1,15 +1,16 @@
-# Odoo25-Om-Rajan-Final
+# Odoo25-Om-Rajan-Final \n
 
-**ProblemStatement**
--StackIt – A Minimal Q&A Forum Platform
--Tech-Stack - ASP .NET C# Framework, Ajax, Bootstrap
+**ProblemStatement**\n
+\n-StackIt – A Minimal Q&A Forum Platform
+\n-Tech-Stack - ASP .NET C# Framework, Ajax, Bootstrap, SQL Server Database
 
+\n
 **Team Details**
-
+\n
 1. OM JOSHI
-omjoshiofficial@gmail.com
-9974391144
+\n omjoshiofficial@gmail.com
+\n 9974391144
 
-2. Rajan Upadhyay
-upadhyayrajan6435@gmail.com
-9879924333
+\n2. Rajan Upadhyay
+\nupadhyayrajan6435@gmail.com
+\n9879924333
