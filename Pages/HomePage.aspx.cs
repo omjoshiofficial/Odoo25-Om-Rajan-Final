@@ -5,41 +5,40 @@ using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using StackIt.Models;
-
+using System.Data.SqlClient;
+using System.Data;
+using System.Configuration;
 
 namespace StackIt.Pages
 {
     public partial class HomePage : System.Web.UI.Page
     {
+        SqlCommand cmd;
+        SqlConnection cn;
+        SqlDataAdapter da;
+        DataSet ds;
+
+        void mycon()
+        {
+            string conStr = ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+            cn = new SqlConnection(conStr);
+            cn.Open();
+        }
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack)
+            mycon();
+            string uid = Request.Cookies["login"].Values["uid"].ToString();
+
+            cmd = new SqlCommand("select * from Questions q join Users u on q.UserId = u.Id where UserId = @id", cn);
+            cmd.Parameters.AddWithValue("@id", uid);
+
+            da = new SqlDataAdapter(cmd);
+            ds = new DataSet();
+            da.Fill(ds);
+
+            if (ds.Tables[0].Rows.Count > 0)
             {
-                var questions = new List<Question>
-                {
-                    new Question 
-                    { Title = "How to join 2 columns...", ShortDescription = "I do not know the code...", 
-                        Author = "UserName", DetailUrl = "QuestionDetailPage.aspx"
-                    },
-                    new Question
-                    { Title = "How to join 2 columns...", ShortDescription = "I do not know the code...",
-                        Author = "UserName", DetailUrl = "QuestionDetailPage.aspx"
-                    },
-                    new Question
-                    { Title = "How to join 2 columns...", ShortDescription = "I do not know the code...",
-                        Author = "UserName", DetailUrl = "QuestionDetailPage.aspx"
-                    },
-                    new Question
-                    { Title = "How to join 2 columns...", ShortDescription = "I do not know the code...",
-                        Author = "UserName", DetailUrl = "QuestionDetailPage.aspx"
-                    },
-                    new Question 
-                    { Title = "How to join 2 columns...", ShortDescription = "I do not know the code...", 
-                        Author = "UserName", DetailUrl = "QuestionDetailPage.aspx"
-                    },
-                    // Add more questions here
-                };
-                rptQuestions.DataSource = questions;
+                rptQuestions.DataSource = ds;
                 rptQuestions.DataBind();
             }
         }

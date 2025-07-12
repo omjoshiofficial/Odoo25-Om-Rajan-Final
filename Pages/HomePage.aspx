@@ -25,10 +25,10 @@
         <!-- Questions List -->
         <asp:Repeater ID="rptQuestions" runat="server">
             <ItemTemplate>
-                <a href='<%# Eval("DetailUrl") %>' class="list-group-item list-group-item-action mb-2 shadow-sm rounded">
+                <a href='QuestionDetailPage.aspx?qid=<%#Eval("QuestionsId") %>' class="list-group-item list-group-item-action mb-2 shadow-sm rounded">
                     <h5 class="mb-1"><%# Eval("Title") %></h5>
-                    <p class="mb-1 text-muted"><%# Eval("ShortDescription") %></p>
-                    <small class="text-secondary">Asked by <%# Eval("Author") %></small>
+                    <p class="mb-1 text-muted"><%# Eval("Description") %></p>
+                    <small class="text-secondary">Asked by <%# Eval("Username") %></small>
                 </a>
             </ItemTemplate>
         </asp:Repeater>
